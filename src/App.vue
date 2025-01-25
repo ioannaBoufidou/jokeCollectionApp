@@ -1,6 +1,10 @@
 <template>
   <div id="app" class="flex h-screen">
-    <aside id="separator-sidebar" class="w-80 h-full bg-gray-50" aria-label="Sidebar">
+    <aside
+      id="separator-sidebar"
+      class="w-80 h-full bg-gray-50 overflow-y-auto"
+      aria-label="Sidebar"
+    >
       <div class="h-full px-3 py-4 overflow-y-auto">
         <header>
           <img
@@ -77,7 +81,7 @@
         </div>
       </div>
     </aside>
-    <main class="flex-1 bg-gray-100 p-6">
+    <main class="flex-1 bg-gray-100 p-6 overflow-y-auto">
       <header class="flex justify-center mb-8">
         <div class="flex bg-gray-200 rounded-lg overflow-hidden">
           <button
@@ -96,16 +100,28 @@
           </button>
         </div>
       </header>
-      <div class="grid grid-cols-3 gap-8 mx-auto justify-center">
+      <div class="grid grid-cols-3 gap-8 mx-auto justify-center pb-8">
         <JokeInfo
-          v-for="box in boxes"
-          :key="box.id"
-          :type="box.type"
-          :setup="box.setup"
-          :punchline="box.punchline"
+          v-for="joke in jokes"
+          :key="joke.id"
+          :type="joke.type"
+          :setup="joke.setup"
+          :punchline="joke.punchline"
         />
       </div>
+      <!-- TODO: Create maybe a magenta color for show more button, also for the arrow -->
+      <div class="flex justify-center mt-6">
+        <button class="text-gray-600 hover:text-gray-800 underline text-lg" @click="showMoreJokes">
+          Show more
+        </button>
+      </div>
     </main>
+    <button
+      class="fixed bottom-4 right-4 p-3 rounded-full bg-gray-600 text-white hover:bg-gray-700"
+      @click="scrollToTop"
+    >
+      ^
+    </button>
   </div>
 </template>
 <script>
@@ -119,39 +135,32 @@ export default {
   data() {
     return {
       activeCategory: 'Random jokes',
-      boxes: [
-        {
-          type: 'general',
-          setup: 'What’s the difference between an African elephant and an Indian elephant?',
-          punchline: 'About 5000 miles.',
-          id: 279,
-        },
-        {
-          type: 'general',
-          setup: 'What do you call a pig that knows karate?',
-          punchline: 'A pork chop!',
-          id: 212,
-        },
-        {
-          type: 'programming',
-          setup: "What's the best thing about a Boolean?",
-          punchline: "Even if you're wrong, you're only off by a bit.",
-          id: 15,
-        },
-        {
-          type: 'general',
-          setup: 'Why do birds fly south for the winter?',
-          punchline: "Because it's too far to walk.",
-          id: 344,
-        },
-        {
-          type: 'programming',
-          setup: 'Why do programmers prefer dark chocolate?',
-          punchline: "Because it's bitter like their code.",
-          id: 416,
-        },
-      ],
+      jokes: [],
     }
+  },
+
+  methods: {
+    async fetchJokes(numberOfJokes) {
+      try {
+        const response = await fetch(
+          `https://official-joke-api.appspot.com/jokes/random/${numberOfJokes}`,
+        )
+        if (!response.ok) throw new Error('Failed to fetch jokes') // TODO: Manage the error case
+        const newJokes = await response.json()
+        this.jokes = [...this.jokes, ...newJokes]
+      } catch (error) {
+        console.error('Error fetching jokes:', error)
+      }
+    },
+    async showMoreJokes() {
+      await this.fetchJokes(10)
+    },
+    scrollToTop() {
+      window.scrollTo(0, 0) // TODO: Fix the navigation to the top of the page
+    },
+  },
+  created() {
+    this.fetchJokes(25)
   },
 }
 </script>
