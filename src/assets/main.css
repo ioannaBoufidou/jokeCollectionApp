@@ -1,0 +1,28 @@
+@import './base.css';
+@import 'tailwindcss';
+
+#app {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+a,
+.purple {
+  text-decoration: none;
+  color: rgb(126, 34, 136);
+  transition: 0.4s;
+  padding: 3px;
+}
+
+@media (hover: hover) {
+  a:hover {
+    background-color: hsla(286, 36%, 46%, 0.2);
+  }
+}
