@@ -148,10 +148,12 @@ export default {
             : 'https://official-joke-api.appspot.com/jokes/programming/ten'
 
         const response = await fetch(url)
-        if (!response.ok) throw new Error('Failed to fetch jokes') // TODO: Manage the error case
+        if (!response.ok) throw new Error('Failed to fetch jokes')
         const newJokes = await response.json()
         this.jokes = [...this.jokes, ...newJokes]
       } catch (error) {
+        this.jokes = []
+        alert('Failed to load jokes. Please try to refresh your page.')
         console.error('Error fetching jokes:', error)
       }
     },
