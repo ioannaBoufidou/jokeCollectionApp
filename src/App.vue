@@ -86,15 +86,15 @@
         <div class="flex bg-gray-200 rounded-lg overflow-hidden">
           <button
             class="px-4 py-2 text-gray-800 hover:bg-gray-300 transition"
-            :class="{ 'bg-gray-300': activeCategory === 'Random jokes' }"
-            @click="activeCategory = 'Random jokes'"
+            :class="{ 'bg-gray-300': activeCategory === 'random' }"
+            @click="changeCategory('random')"
           >
             Random jokes
           </button>
           <button
             class="px-4 py-2 text-gray-800 hover:bg-gray-300 transition"
-            :class="{ 'bg-gray-300': activeCategory === 'programming jokes' }"
-            @click="activeCategory = 'programming jokes'"
+            :class="{ 'bg-gray-300': activeCategory === 'programming' }"
+            @click="changeCategory('programming')"
           >
             Programming jokes
           </button>
@@ -134,17 +134,20 @@ export default {
   },
   data() {
     return {
-      activeCategory: 'Random jokes',
+      activeCategory: 'random',
       jokes: [],
     }
   },
 
   methods: {
-    async fetchJokes(numberOfJokes) {
+    async fetchJokes() {
       try {
-        const response = await fetch(
-          `https://official-joke-api.appspot.com/jokes/random/${numberOfJokes}`,
-        )
+        const url =
+          this.activeCategory === 'random'
+            ? 'https://official-joke-api.appspot.com/jokes/ten'
+            : 'https://official-joke-api.appspot.com/jokes/programming/ten'
+
+        const response = await fetch(url)
         if (!response.ok) throw new Error('Failed to fetch jokes') // TODO: Manage the error case
         const newJokes = await response.json()
         this.jokes = [...this.jokes, ...newJokes]
@@ -153,14 +156,20 @@ export default {
       }
     },
     async showMoreJokes() {
-      await this.fetchJokes(10)
+      await this.fetchJokes()
     },
     scrollToTop() {
       window.scrollTo(0, 0) // TODO: Fix the navigation to the top of the page
     },
+    changeCategory(category) {
+      if (this.activeCategory === category) return
+      this.activeCategory = category
+      this.jokes = []
+      this.fetchJokes()
+    },
   },
   created() {
-    this.fetchJokes(25)
+    this.fetchJokes()
   },
 }
 </script>
