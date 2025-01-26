@@ -100,20 +100,29 @@
           </button>
         </div>
       </header>
-      <div class="grid grid-cols-3 gap-8 mx-auto justify-center pb-8">
-        <JokeInfo
-          v-for="joke in jokes"
-          :key="joke.id"
-          :type="joke.type"
-          :setup="joke.setup"
-          :punchline="joke.punchline"
-        />
+      <div v-if="spinner" class="flex flex-col items-center">
+        <div class="animate-spin h-8 w-8 border-4 border-t-transparent rounded-full"></div>
+        <span>Fetching jokes... Your daily dose of laughter is on its way!</span>
       </div>
-      <!-- TODO: Create maybe a magenta color for show more button, also for the arrow -->
-      <div class="flex justify-center mt-6">
-        <button class="text-gray-600 hover:text-gray-800 underline text-lg" @click="showMoreJokes">
-          Show more
-        </button>
+      <div v-else>
+        <div class="grid grid-cols-3 gap-8 justify-center pb-8">
+          <JokeInfo
+            v-for="joke in jokes"
+            :key="joke.id"
+            :type="joke.type"
+            :setup="joke.setup"
+            :punchline="joke.punchline"
+          />
+        </div>
+        <!-- TODO: Create maybe a magenta color for show more button, also for the arrow -->
+        <div class="flex justify-center mt-6">
+          <button
+            class="text-gray-600 hover:text-gray-800 underline text-lg"
+            @click="showMoreJokes"
+          >
+            Show more
+          </button>
+        </div>
       </div>
     </main>
     <button
@@ -136,12 +145,14 @@ export default {
     return {
       activeCategory: 'random',
       jokes: [],
+      spinner: false,
     }
   },
 
   methods: {
     async fetchJokes() {
       try {
+        this.spinner = true
         const url =
           this.activeCategory === 'random'
             ? 'https://official-joke-api.appspot.com/jokes/ten'
@@ -155,6 +166,8 @@ export default {
         this.jokes = []
         alert('Failed to load jokes. Please try to refresh your page.')
         console.error('Error fetching jokes:', error)
+      } finally {
+        this.spinner = false
       }
     },
     async showMoreJokes() {
