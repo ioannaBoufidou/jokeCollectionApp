@@ -83,7 +83,7 @@
             </a>
           </li>
         </ul>
-        <div class="fixed bottom-0 w-full px-4 py-4 bg-white border-t border-gray-200">
+        <div class="fixed bottom-0 flex items-center gap-4 p-4 border-t border-gray-200 mt-8">
           <div class="flex items-center gap-4">
             <img
               src="./assets/profilePhoto.jpg"
@@ -187,9 +187,18 @@ export default {
   },
 
   methods: {
-    async fetchJokes() {
+    async fetchJokes(forced = false) {
       try {
         this.spinner = true
+        const storedJokes = localStorage.getItem('totalStoredJokes')
+        const parsedJokes = JSON.parse(storedJokes)
+        if (storedJokes && parsedJokes[this.activeCategory]?.length && !forced) {
+          this.jokes = JSON.parse(storedJokes)
+          this.favoriteJokes = Object.values(this.jokes)
+            .flat()
+            .filter((joke) => joke.isFavorite === true)
+          return
+        }
         const url =
           this.activeCategory === 'random'
             ? 'https://official-joke-api.appspot.com/jokes/ten'
@@ -210,6 +219,7 @@ export default {
             isFavorite: this.favoriteJokes.some((fav) => fav.id === joke.id),
           })),
         ]
+        localStorage.setItem('totalStoredJokes', JSON.stringify(this.jokes))
       } catch (error) {
         alert('Failed to load jokes. Please try to refresh your page.')
         console.error('Error fetching jokes:', error)
@@ -218,7 +228,7 @@ export default {
       }
     },
     async showMoreJokes() {
-      await this.fetchJokes()
+      await this.fetchJokes(true)
     },
     scrollToTop() {
       window.scrollTo(0, 0) // TODO: Fix the navigation to the top of the page
@@ -227,22 +237,24 @@ export default {
       this.changeView('all')
       if (this.activeCategory === category) return
       this.activeCategory = category
-      this.jokes = []
-      this.fetchJokes()
+      if (!this.jokes[category]?.length) this.fetchJokes(true)
     },
     changeView(view) {
       this.activeView = view
     },
     toggleFavorite(jokeId) {
-      const jokeIndex = this.favoriteJokes.findIndex((joke) => joke.id === jokeId)
-      if (jokeIndex !== -1) {
-        this.favoriteJokes.splice(jokeIndex, 1)
-      } else {
-        const jokeToAdd = this.jokes[this.activeCategory].find((joke) => joke.id === jokeId)
-        if (jokeToAdd) {
-          jokeToAdd.isFavorite = true
-          this.favoriteJokes.push(jokeToAdd)
+      const jokeToUpdate = Object.values(this.jokes)
+        .flat()
+        .find((joke) => joke.id === jokeId)
+
+      if (jokeToUpdate) {
+        jokeToUpdate.isFavorite = !jokeToUpdate.isFavorite
+        if (jokeToUpdate.isFavorite) {
+          this.favoriteJokes.push(jokeToUpdate)
+        } else {
+          this.favoriteJokes = this.favoriteJokes.filter((joke) => joke.id !== jokeId)
         }
+        localStorage.setItem('totalStoredJokes', JSON.stringify(this.jokes))
       }
     },
     toggleDropdown() {
