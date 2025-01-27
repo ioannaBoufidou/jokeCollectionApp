@@ -99,24 +99,52 @@
       </div>
     </aside>
     <main class="flex-1 bg-gray-100 p-6 overflow-y-auto">
-      <header v-if="activeView !== 'favorites'" class="flex justify-center mb-8">
-        <div class="flex bg-gray-200 rounded-lg overflow-hidden">
+      <div class="flex justify-between items-center mb-6">
+        <div
+          v-if="activeView !== 'favorites'"
+          class="flex bg-gray-200 rounded-full overflow-hidden shadow-sm"
+        >
           <button
-            class="px-4 py-2 text-gray-800 hover:bg-gray-300 transition"
+            class="px-3 py-1 text-sm text-gray-800 hover:bg-gray-300 transition"
             :class="{ 'bg-gray-300': activeCategory === 'random' }"
             @click="changeCategory('random')"
           >
             Random Jokes
           </button>
           <button
-            class="px-4 py-2 text-gray-800 hover:bg-gray-300 transition"
+            class="px-3 py-1 text-sm text-gray-800 hover:bg-gray-300 transition"
             :class="{ 'bg-gray-300': activeCategory === 'programming' }"
             @click="changeCategory('programming')"
           >
             Programming Jokes
           </button>
         </div>
-      </header>
+        <form class="relative w-1/2 max-w-sm">
+          <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+            <svg
+              class="w-4 h-4 text-gray-500 dark:text-gray-400"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 20 20"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+              />
+            </svg>
+          </div>
+          <input
+            type="search"
+            class="block w-full py-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-gray-500 focus:border-gray-500"
+            placeholder="Search jokes..."
+            v-model="searchJoke"
+          />
+        </form>
+      </div>
       <div v-if="spinner" class="flex flex-col items-center">
         <div class="animate-spin h-8 w-8 border-4 border-t-transparent rounded-full"></div>
         <span>Fetching jokes... Your daily dose of laughter is on its way!</span>
@@ -183,6 +211,7 @@ export default {
       favoriteJokes: [],
       activeView: 'all',
       dropdownOpen: false,
+      searchJoke: '',
     }
   },
 
@@ -266,9 +295,14 @@ export default {
   },
   computed: {
     displayedJokes() {
-      return this.activeView === 'favorites'
-        ? this.favoriteJokes
-        : this.jokes[this.activeCategory] || []
+      let jokes =
+        this.activeView === 'favorites' ? this.favoriteJokes : this.jokes[this.activeCategory] || []
+      if (this.searchJoke) {
+        jokes = jokes.filter((joke) =>
+          joke.setup.toLowerCase().includes(this.searchJoke.toLowerCase()),
+        )
+      }
+      return jokes
     },
     HeaderJokeCards() {
       return this.activeView === 'favorites'
