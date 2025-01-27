@@ -125,7 +125,7 @@
             :punchline="joke.punchline"
             :id="joke.id"
             :isFavorite="favoriteJokes.includes(joke.id)"
-            @add-favorite="addToFavorite"
+            @toggle-favorite="toggleFavorite"
           />
         </div>
         <!-- TODO: Create maybe a magenta color for show more button, also for the arrow -->
@@ -201,8 +201,12 @@ export default {
     changeView(view) {
       this.activeView = view
     },
-    addToFavorite(jokeId) {
-      this.favoriteJokes.push(jokeId)
+    toggleFavorite(jokeId) {
+      if (!this.favoriteJokes.includes(jokeId)) {
+        this.favoriteJokes.push(jokeId)
+      } else {
+        this.favoriteJokes = this.favoriteJokes.filter((id) => id !== jokeId)
+      }
     },
   },
   created() {

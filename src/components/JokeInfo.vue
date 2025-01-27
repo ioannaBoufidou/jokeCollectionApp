@@ -2,9 +2,9 @@
   <div class="card-container relative w-full h-full">
     <button
       class="absolute top-2 right-2 rounded-full w-8 h-8 items-center justify-center text-gray-800 hover:bg-gray-300 z-10 border border-gray-400"
-      @click="addToFavorite"
+      @click="toggleFavorite"
     >
-      +
+      {{ isFavorite ? 'x' : '+' }}
     </button>
     <div
       class="card-inner duration-500"
@@ -56,9 +56,9 @@ export default {
     onRevealClick() {
       this.isRevealed = !this.isRevealed
     },
-    addToFavorite() {
-      this.isFavorite = true
-      this.$emit('add-favorite', this.id)
+    toggleFavorite() {
+      this.isFavorite = !this.isFavorite
+      this.$emit('toggle-favorite', this.id)
     },
   },
 }
