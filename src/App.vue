@@ -10,17 +10,18 @@
           />
           <h1 class="text-2xl font-extrabold text-gray-800">Joke Collection</h1>
         </header>
+        <h2 class="text-sm font-semibold text-gray-500 tracking-wider mb-4">COLLECTIONS</h2>
         <ul class="font-medium">
           <li>
             <button
               type="button"
-              class="flex items-center w-full px-3 py-2 text-lg text-gray-800 font-semibold transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+              class="flex items-center justify-between w-full px-2 py-4 text-lg text-magenta-700 font-semibold rounded-lg transition duration-75 hover:bg-magenta-100 hover:text-magenta-900 group"
               @click="toggleDropdown"
               :aria-expanded="dropdownOpen"
             >
-              <span class="flex-1 text-left">All Jokes</span>
+              <span class="flex items-center gap-2"> All Jokes </span>
               <svg
-                class="w-4 h-4 text-gray-600"
+                class="w-4 h-4 text-magenta-600"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 10 6"
@@ -42,7 +43,7 @@
             >
               <li>
                 <a
-                  class="block w-full px-3 py-2 text-base text-gray-700 rounded-lg group hover:bg-gray-200"
+                  class="block px-3 py-2 text-magenta-700 text-base rounded-lg hover:bg-magenta-100 hover:text-magenta-900"
                   @click="changeCategory('random')"
                 >
                   Random Jokes
@@ -50,20 +51,35 @@
               </li>
               <li>
                 <a
-                  class="block w-full px-3 py-2 text-base text-gray-700 rounded-lg group hover:bg-gray-200"
+                  class="block px-3 py-2 text-magenta-700 text-base rounded-lg hover:bg-magenta-100 hover:text-magenta-900"
                   @click="changeCategory('programming')"
                 >
-                  Programming
+                  Programming Jokes
                 </a>
               </li>
             </ul>
           </li>
           <li>
             <a
-              class="flex items-center px-3 py-2 text-lg text-gray-800 font-semibold rounded-lg hover:bg-gray-100 transition duration-75 group"
+              class="flex items-center justify-between px-4 py-4 text-lg text-magenta-700 font-semibold rounded-lg transition duration-75 hover:bg-magenta-100 hover:text-magenta-900"
               @click="changeView('favorites')"
             >
-              <span class="text-left px-3">Favorites</span>
+              <span class="flex items-center gap-2 px-1"> Favorites</span>
+              <span class="w-6 h-6 text-magenta-600">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 28 28"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"
+                  />
+                </svg>
+              </span>
             </a>
           </li>
         </ul>
@@ -90,14 +106,14 @@
             :class="{ 'bg-gray-300': activeCategory === 'random' }"
             @click="changeCategory('random')"
           >
-            Random jokes
+            Random Jokes
           </button>
           <button
             class="px-4 py-2 text-gray-800 hover:bg-gray-300 transition"
             :class="{ 'bg-gray-300': activeCategory === 'programming' }"
             @click="changeCategory('programming')"
           >
-            Programming jokes
+            Programming Jokes
           </button>
         </div>
       </header>
