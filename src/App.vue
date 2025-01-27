@@ -21,6 +21,7 @@
               class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
               aria-controls="dropdown"
               data-collapse-toggle="dropdown"
+              @click="changeView('all')"
             >
               <!-- TODO: Fix the dropdown -->
               <span class="flex-1 ms-3 text-left whitespace-nowrap">All Jokes</span>
@@ -63,6 +64,7 @@
             <a
               href="#"
               class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+              @click="changeView('favorites')"
             >
               <span class="ms-3">Favorites</span>
             </a>
@@ -82,7 +84,7 @@
       </div>
     </aside>
     <main class="flex-1 bg-gray-100 p-6 overflow-y-auto">
-      <header class="flex justify-center mb-8">
+      <header v-if="activeView !== 'favorites'" class="flex justify-center mb-8">
         <div class="flex bg-gray-200 rounded-lg overflow-hidden">
           <button
             class="px-4 py-2 text-gray-800 hover:bg-gray-300 transition"
@@ -104,18 +106,30 @@
         <div class="animate-spin h-8 w-8 border-4 border-t-transparent rounded-full"></div>
         <span>Fetching jokes... Your daily dose of laughter is on its way!</span>
       </div>
+      <div
+        v-else-if="activeView === 'favorites' && displayedJokes.length === 0"
+        class="flex flex-col items-center justify-center h-full"
+      >
+        <span
+          >Looks like your Favorites list could use a boost. Go back to All Jokes to add some jokes
+          to your Favorites list.</span
+        >
+      </div>
       <div v-else>
         <div class="grid grid-cols-3 gap-8 justify-center pb-8">
           <JokeInfo
-            v-for="joke in jokes"
+            v-for="joke in displayedJokes"
             :key="joke.id"
             :type="joke.type"
             :setup="joke.setup"
             :punchline="joke.punchline"
+            :id="joke.id"
+            :isFavorite="favoriteJokes.includes(joke.id)"
+            @add-favorite="addToFavorite"
           />
         </div>
         <!-- TODO: Create maybe a magenta color for show more button, also for the arrow -->
-        <div class="flex justify-center mt-6">
+        <div v-if="activeView !== 'favorites'" class="flex justify-center mt-6">
           <button
             class="text-gray-600 hover:text-gray-800 underline text-lg"
             @click="showMoreJokes"
@@ -146,6 +160,8 @@ export default {
       activeCategory: 'random',
       jokes: [],
       spinner: false,
+      favoriteJokes: [],
+      activeView: 'all',
     }
   },
 
@@ -182,9 +198,22 @@ export default {
       this.jokes = []
       this.fetchJokes()
     },
+    changeView(view) {
+      this.activeView = view
+    },
+    addToFavorite(jokeId) {
+      this.favoriteJokes.push(jokeId)
+    },
   },
   created() {
     this.fetchJokes()
+  },
+  computed: {
+    displayedJokes() {
+      return this.activeView === 'all'
+        ? this.jokes
+        : this.jokes.filter((joke) => this.favoriteJokes.includes(joke.id))
+    },
   },
 }
 </script>

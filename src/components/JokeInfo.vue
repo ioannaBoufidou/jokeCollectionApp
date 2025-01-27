@@ -1,6 +1,16 @@
 <template>
-  <div class="card-container relative w-full h-full" @click="onRevealClick">
-    <div class="card-inner duration-500" :class="{ 'rotate-y-180': isRevealed }">
+  <div class="card-container relative w-full h-full">
+    <button
+      class="absolute top-2 right-2 rounded-full w-8 h-8 items-center justify-center text-gray-800 hover:bg-gray-300 z-10 border border-gray-400"
+      @click="addToFavorite"
+    >
+      +
+    </button>
+    <div
+      class="card-inner duration-500"
+      :class="{ 'rotate-y-180': isRevealed }"
+      @click="onRevealClick"
+    >
       <!-- front side of the card -->
       <div
         class="bg-white rounded-2xl shadow-lg hover:shadow-2xl p-6 flex flex-col justify-between h-64"
@@ -40,11 +50,15 @@ export default {
     },
   },
   data() {
-    return { isRevealed: false }
+    return { isRevealed: false, isFavorite: false }
   },
   methods: {
     onRevealClick() {
       this.isRevealed = !this.isRevealed
+    },
+    addToFavorite() {
+      this.isFavorite = true
+      this.$emit('add-favorite', this.id)
     },
   },
 }
