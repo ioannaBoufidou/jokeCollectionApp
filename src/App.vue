@@ -116,17 +116,22 @@
         >
       </div>
       <div v-else>
-        <div class="grid grid-cols-3 gap-8 justify-center pb-8">
-          <JokeInfo
-            v-for="joke in displayedJokes"
-            :key="joke.id"
-            :type="joke.type"
-            :setup="joke.setup"
-            :punchline="joke.punchline"
-            :id="joke.id"
-            :isFavorite="favoriteJokes.includes(joke.id)"
-            @toggle-favorite="toggleFavorite"
-          />
+        <div>
+          <h2 class="text-2xl font-bold tracking-tight text-gray-900 py-4 px-4">
+            {{ HeaderJokeCards }}
+          </h2>
+          <div class="grid grid-cols-3 gap-8 justify-center pb-8">
+            <JokeInfo
+              v-for="joke in displayedJokes"
+              :key="joke.id"
+              :type="joke.type"
+              :setup="joke.setup"
+              :punchline="joke.punchline"
+              :id="joke.id"
+              :isFavorite="favoriteJokes.includes(joke.id)"
+              @toggle-favorite="toggleFavorite"
+            />
+          </div>
         </div>
         <!-- TODO: Create maybe a magenta color for show more button, also for the arrow -->
         <div v-if="activeView !== 'favorites'" class="flex justify-center mt-6">
@@ -232,6 +237,13 @@ export default {
       return this.activeView === 'favorites'
         ? this.favoriteJokes
         : this.jokes[this.activeCategory] || []
+    },
+    HeaderJokeCards() {
+      return this.activeView === 'favorites'
+        ? 'Your Favorite Jokes'
+        : this.activeCategory === 'random'
+          ? 'Random Jokes'
+          : 'Programming Jokes'
     },
   },
 }
