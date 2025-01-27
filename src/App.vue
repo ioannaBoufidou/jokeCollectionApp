@@ -1,32 +1,26 @@
 <template>
   <div id="app" class="flex h-screen">
-    <aside
-      id="separator-sidebar"
-      class="w-80 h-full bg-gray-50 overflow-y-auto"
-      aria-label="Sidebar"
-    >
-      <div class="h-full px-3 py-4 overflow-y-auto">
-        <header>
+    <aside class="w-80 h-full bg-gray-50 overflow-y-auto" aria-label="Sidebar">
+      <div class="h-full px-4 py-6">
+        <header class="mb-6">
           <img
             src="./assets/logo.jpg"
-            alt="User profile"
-            class="w-12 h-12 rounded-full object-cover"
+            alt="Logo"
+            class="w-14 h-14 rounded-full object-cover mb-2"
           />
-          <h1 class="text-xl font-bold">Joke Collection</h1>
+          <h1 class="text-2xl font-extrabold text-gray-800">Joke Collection</h1>
         </header>
-        <ul class="space-y-2 font-medium">
+        <ul class="font-medium">
           <li>
             <button
               type="button"
-              class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
-              aria-controls="dropdown"
-              data-collapse-toggle="dropdown"
-              @click="changeView('all')"
+              class="flex items-center w-full px-3 py-2 text-lg text-gray-800 font-semibold transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+              @click="toggleDropdown"
+              :aria-expanded="dropdownOpen"
             >
-              <!-- TODO: Fix the dropdown -->
-              <span class="flex-1 ms-3 text-left whitespace-nowrap">All Jokes</span>
+              <span class="flex-1 text-left">All Jokes</span>
               <svg
-                class="w-3 h-3"
+                class="w-4 h-4 text-gray-600"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 10 6"
@@ -41,19 +35,23 @@
                 />
               </svg>
             </button>
-            <ul id="dropdown" class="hidden py-2 space-y-2">
+            <ul
+              v-show="dropdownOpen"
+              class="py-2 pl-6 space-y-3 border-l border-gray-300"
+              role="menu"
+            >
               <li>
                 <a
-                  href="#"
-                  class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                  class="block w-full px-3 py-2 text-base text-gray-700 rounded-lg group hover:bg-gray-200"
+                  @click="changeCategory('random')"
                 >
                   Random Jokes
                 </a>
               </li>
               <li>
                 <a
-                  href="#"
-                  class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                  class="block w-full px-3 py-2 text-base text-gray-700 rounded-lg group hover:bg-gray-200"
+                  @click="changeCategory('programming')"
                 >
                   Programming
                 </a>
@@ -62,23 +60,24 @@
           </li>
           <li>
             <a
-              href="#"
-              class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+              class="flex items-center px-3 py-2 text-lg text-gray-800 font-semibold rounded-lg hover:bg-gray-100 transition duration-75 group"
               @click="changeView('favorites')"
             >
-              <span class="ms-3">Favorites</span>
+              <span class="text-left px-3">Favorites</span>
             </a>
           </li>
         </ul>
-        <div class="fixed bottom-0 flex items-center gap-4 p-4 border-t border-gray-200 mt-8">
-          <img
-            src="./assets/profilePhoto.jpg"
-            alt="User profile"
-            class="w-12 h-12 rounded-full object-cover"
-          />
-          <div>
-            <p class="text-gray-800 font-semibold">John Doe</p>
-            <p class="text-gray-500 text-sm">Greece</p>
+        <div class="fixed bottom-0 w-full px-4 py-4 bg-white border-t border-gray-200">
+          <div class="flex items-center gap-4">
+            <img
+              src="./assets/profilePhoto.jpg"
+              alt="User profile"
+              class="w-14 h-14 rounded-full object-cover"
+            />
+            <div>
+              <p class="text-lg text-gray-900 font-semibold">John Doe</p>
+              <p class="text-sm text-gray-500">Greece</p>
+            </div>
           </div>
         </div>
       </div>
@@ -167,6 +166,7 @@ export default {
       spinner: false,
       favoriteJokes: [],
       activeView: 'all',
+      dropdownOpen: false,
     }
   },
 
@@ -208,6 +208,7 @@ export default {
       window.scrollTo(0, 0) // TODO: Fix the navigation to the top of the page
     },
     changeCategory(category) {
+      this.changeView('all')
       if (this.activeCategory === category) return
       this.activeCategory = category
       this.jokes = []
@@ -227,6 +228,9 @@ export default {
           this.favoriteJokes.push(jokeToAdd)
         }
       }
+    },
+    toggleDropdown() {
+      this.dropdownOpen = !this.dropdownOpen
     },
   },
   created() {
@@ -250,10 +254,6 @@ export default {
 </script>
 
 <style>
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 #app {
   height: 100%;
   margin: 0;
