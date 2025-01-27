@@ -158,7 +158,7 @@ export default {
   data() {
     return {
       activeCategory: 'random',
-      jokes: [],
+      jokes: { random: [], programming: [] },
       spinner: false,
       favoriteJokes: [],
       activeView: 'all',
@@ -177,9 +177,19 @@ export default {
         const response = await fetch(url)
         if (!response.ok) throw new Error('Failed to fetch jokes')
         const newJokes = await response.json()
-        this.jokes = [...this.jokes, ...newJokes]
+        if (!this.jokes[this.activeCategory]) {
+          //initilize category
+          this.jokes[this.activeCategory] = []
+        }
+
+        this.jokes[this.activeCategory] = [
+          ...this.jokes[this.activeCategory],
+          ...newJokes.map((joke) => ({
+            ...joke,
+            isFavorite: this.favoriteJokes.some((fav) => fav.id === joke.id),
+          })),
+        ]
       } catch (error) {
-        this.jokes = []
         alert('Failed to load jokes. Please try to refresh your page.')
         console.error('Error fetching jokes:', error)
       } finally {
@@ -202,10 +212,15 @@ export default {
       this.activeView = view
     },
     toggleFavorite(jokeId) {
-      if (!this.favoriteJokes.includes(jokeId)) {
-        this.favoriteJokes.push(jokeId)
+      const jokeIndex = this.favoriteJokes.findIndex((joke) => joke.id === jokeId)
+      if (jokeIndex !== -1) {
+        this.favoriteJokes.splice(jokeIndex, 1)
       } else {
-        this.favoriteJokes = this.favoriteJokes.filter((id) => id !== jokeId)
+        const jokeToAdd = this.jokes[this.activeCategory].find((joke) => joke.id === jokeId)
+        if (jokeToAdd) {
+          jokeToAdd.isFavorite = true
+          this.favoriteJokes.push(jokeToAdd)
+        }
       }
     },
   },
@@ -214,9 +229,9 @@ export default {
   },
   computed: {
     displayedJokes() {
-      return this.activeView === 'all'
-        ? this.jokes
-        : this.jokes.filter((joke) => this.favoriteJokes.includes(joke.id))
+      return this.activeView === 'favorites'
+        ? this.favoriteJokes
+        : this.jokes[this.activeCategory] || []
     },
   },
 }
