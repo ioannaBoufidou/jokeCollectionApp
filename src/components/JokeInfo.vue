@@ -1,11 +1,5 @@
 <template>
   <div class="card-container relative w-full h-full">
-    <button
-      class="absolute top-2 right-2 rounded-full w-8 h-8 items-center justify-center text-gray-800 hover:bg-gray-300 z-10 border border-gray-400"
-      @click="toggleFavorite"
-    >
-      {{ isFavorite ? 'x' : '+' }}
-    </button>
     <div
       class="card-inner duration-500"
       :class="{ 'rotate-y-180': isRevealed }"
@@ -15,6 +9,13 @@
       <div
         class="bg-white rounded-2xl shadow-lg hover:shadow-2xl p-6 flex flex-col justify-between h-64"
       >
+        <button
+          v-if="!isRevealed"
+          class="absolute top-2 right-2 rounded-full w-8 h-8 items-center justify-center text-gray-800 hover:bg-gray-300 z-10 border border-gray-400"
+          @click.stop="toggleFavorite"
+        >
+          {{ isFavorite ? 'x' : '+' }}
+        </button>
         <h2 class="text-lg font-bold text-gray-800">{{ setup }}</h2>
         <p class="mt-4 text-gray-500 italic">Click to reveal the punchline</p>
       </div>
@@ -22,6 +23,13 @@
       <div
         class="bg-gray-100 rounded-2xl shadow-lg hover:shadow-2xl p-6 flex items-center justify-center absolute inset-0 card-back"
       >
+        <button
+          v-if="isRevealed"
+          class="absolute top-2 right-2 rounded-full w-8 h-8 items-center justify-center text-gray-800 hover:bg-gray-300 z-10 border border-gray-400"
+          @click.stop="toggleFavorite"
+        >
+          {{ isFavorite ? 'x' : '+' }}
+        </button>
         <p class="text-gray-800">{{ punchline }}</p>
       </div>
     </div>
