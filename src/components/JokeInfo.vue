@@ -19,9 +19,9 @@
         <h2 class="text-lg font-bold text-gray-800">{{ setup }}</h2>
         <p class="mt-4 text-gray-500 italic">Click to reveal the punchline</p>
       </div>
-      <!-- back side of the card-- TODO: change the gray color maybe -->
+      <!-- back side of the card -->
       <div
-        class="bg-gray-100 rounded-2xl shadow-lg hover:shadow-2xl p-6 flex items-center justify-center absolute inset-0 card-back"
+        class="bg-gray-100 rounded-2xl shadow-lg hover:shadow-2xl p-6 flex flex-col justify-center absolute inset-0 card-back"
       >
         <button
           v-if="isRevealed"
@@ -30,7 +30,27 @@
         >
           {{ isFavorite ? 'x' : '+' }}
         </button>
-        <p class="text-gray-800">{{ punchline }}</p>
+        <p class="text-gray-800 text-center mb-4">{{ punchline }}</p>
+        <div class="flex justify-center items-center">
+          <svg
+            v-for="star in 5"
+            :key="star"
+            :class="
+              star <= currentRating
+                ? 'w-6 h-6 cursor-pointer text-yellow-400'
+                : 'w-6 h-6 cursor-pointer text-gray-400'
+            "
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+            viewBox="0 0 22 20"
+            @click.stop="rateJoke(star)"
+          >
+            <path
+              d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"
+            />
+          </svg>
+          <p class="px-3 text-gray-500 mt-2 text-sm text-center">{{ currentRating }} out of 5</p>
+        </div>
       </div>
     </div>
   </div>
@@ -56,9 +76,17 @@ export default {
       type: Number,
       required: true,
     },
+    settedRating: {
+      type: Number,
+      default: 0,
+    },
   },
   data() {
-    return { isRevealed: false, isFavorite: false }
+    return {
+      isRevealed: false,
+      isFavorite: false,
+      currentRating: this.settedRating,
+    }
   },
   methods: {
     onRevealClick() {
@@ -67,6 +95,10 @@ export default {
     toggleFavorite() {
       this.isFavorite = !this.isFavorite
       this.$emit('toggle-favorite', this.id)
+    },
+    rateJoke(rating) {
+      this.currentRating = rating
+      this.$emit('rate-joke', { id: this.id, rating })
     },
   },
 }

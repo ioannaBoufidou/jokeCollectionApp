@@ -198,6 +198,8 @@
               :id="joke.id"
               :isFavorite="favoriteJokes.includes(joke.id)"
               @toggle-favorite="toggleFavorite"
+              :settedRating="joke.rating || 0"
+              @rate-joke="updateJokeRating"
             />
           </div>
         </div>
@@ -272,6 +274,7 @@ export default {
           ...newJokes.map((joke) => ({
             ...joke,
             isFavorite: this.favoriteJokes.some((fav) => fav.id === joke.id),
+            rating: 0,
           })),
         ]
         localStorage.setItem('totalStoredJokes', JSON.stringify(this.jokes))
@@ -314,6 +317,16 @@ export default {
     },
     toggleDropdown() {
       this.dropdownOpen = !this.dropdownOpen
+    },
+    updateJokeRating({ id, rating }) {
+      const jokeToUpdate = Object.values(this.jokes)
+        .flat()
+        .find((joke) => joke.id === id)
+
+      if (jokeToUpdate) {
+        jokeToUpdate.rating = rating
+        localStorage.setItem('totalStoredJokes', JSON.stringify(this.jokes))
+      }
     },
   },
   created() {
