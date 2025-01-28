@@ -82,6 +82,30 @@
               </span>
             </a>
           </li>
+          <li>
+            <a
+              class="flex items-center justify-between px-4 py-4 text-lg text-gray-700 font-semibold rounded-lg transition duration-75 hover:bg-gray-100 hover:text-gray-900"
+              @click="isModalOpen = true"
+            >
+              <span class="flex items-center gap-2 px-1">App Info/Statistics</span>
+              <span class="w-6 h-6 text-gray-600">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  class="w-6 h-6 text-gray-500"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </span>
+            </a>
+          </li>
         </ul>
         <div class="fixed bottom-0 flex items-center gap-4 p-4 border-t border-gray-200 mt-8">
           <div class="flex items-center gap-4">
@@ -168,17 +192,17 @@
               </h2>
             </div>
             <div class="flex gap-2">
-            <div class="relative inline-block w-32">
+              <div class="relative inline-block w-32">
                 <label class="block text-xs font-medium text-gray-500 px-1">Sort by</label>
-              <select
-                v-model="selectedSort"
-                class="appearance-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-gray-500 focus:border-gray-500 block w-full p-1 pr-6"
-              >
-                <option value="Random">None</option>
-                <option value="Rating">Rating</option>
-                <option value="Alphabetically">Alphabetically</option>
-              </select>
-              <svg
+                <select
+                  v-model="selectedSort"
+                  class="appearance-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-gray-500 focus:border-gray-500 block w-full p-1 pr-6"
+                >
+                  <option value="Random">None</option>
+                  <option value="Rating">Rating</option>
+                  <option value="Alphabetically">Alphabetically</option>
+                </select>
+                <svg
                   class="absolute right-1 top-7 transform -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -204,14 +228,14 @@
                 </select>
                 <svg
                   class="absolute right-1 top-7 transform -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-              </svg>
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
               </div>
             </div>
           </div>
@@ -248,6 +272,50 @@
       ^
     </button>
   </div>
+  <div
+    v-if="isModalOpen"
+    class="fixed inset-0 flex items-center justify-center z-50 modal-overlay"
+    @click.self="isModalOpen = false"
+  >
+    <div class="bg-white rounded-lg shadow-lg p-8 max-w-md w-full">
+      <div class="text-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-800">Collection Statistics</h2>
+        <p class="text-gray-600">Here are some insights about your collection:</p>
+      </div>
+      <div class="grid grid-cols-2 gap-4 text-center py-4">
+        <div class="bg-gray-50 rounded-lg p-4 shadow-sm">
+          <p class="text-sm text-gray-500">Total Favorite Jokes</p>
+          <p class="text-2xl font-semibold text-magenta-700">{{ collectionStatistics().total }}</p>
+        </div>
+        <div class="bg-green-50 rounded-lg p-4 shadow-sm">
+          <p class="text-sm text-gray-500">Average Rating</p>
+          <div class="inline-flex items-center">
+            <p class="text-2xl font-semibold text-magenta-700">
+              {{ collectionStatistics().average }}
+            </p>
+            <svg
+              class="w-6 h-6 text-yellow-400 ml-2"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2.5l3.09 6.26L22 9.34l-5 4.87 1.18 6.89L12 17.77l-6.18 3.33L7 14.21 2 9.34l6.91-1.58L12 2.5z"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="mt-6 text-center py-4">
+        <button
+          @click="isModalOpen = false"
+          class="bg-gray-500 text-white px-6 py-2 rounded-lg shadow hover:bg-gray-600 transition"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
 </template>
 <script>
 import JokeInfo from './components/JokeInfo.vue'
@@ -268,9 +336,9 @@ export default {
       searchJoke: '',
       selectedSort: 'Random',
       selectedFilter: 0,
+      isModalOpen: false,
     }
   },
-
   methods: {
     async fetchJokes(forced = false) {
       try {
@@ -356,6 +424,20 @@ export default {
         localStorage.setItem('totalStoredJokes', JSON.stringify(this.jokes))
       }
     },
+    collectionStatistics() {
+      const total = this.favoriteJokes.length
+      let totalRatings = 0
+      let totalCount = 0
+
+      for (const category in this.jokes) {
+        this.jokes[category].forEach((joke) => {
+          totalRatings += parseInt(joke.rating)
+          totalCount++
+        })
+      }
+      const average = totalCount > 0 ? (totalRatings / totalCount).toFixed(1) : 0
+      return { total, average }
+    },
   },
   created() {
     this.fetchJokes()
@@ -411,5 +493,9 @@ header {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+}
+
+.modal-overlay {
+  background-color: rgba(87, 84, 84, 0.5);
 }
 </style>
