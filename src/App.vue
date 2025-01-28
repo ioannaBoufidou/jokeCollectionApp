@@ -264,7 +264,10 @@
             />
           </div>
         </div>
-        <div v-if="activeView !== 'favorites'" class="flex justify-center mt-6">
+        <div
+          v-if="activeView !== 'favorites' && searchJoke === '' && selectedFilter === 0"
+          class="flex justify-center mt-6"
+        >
           <button
             class="text-fuchsia-900 hover:text-gray-600 underline text-lg"
             @click="showMoreJokes"
