@@ -127,6 +127,7 @@
         <div
           v-if="activeView !== 'favorites'"
           class="flex bg-gray-200 rounded-full overflow-hidden shadow-sm"
+          :class="{ 'opacity-50 pointer-events-none': spinner }"
         >
           <button
             class="px-3 py-1 text-sm text-gray-800 hover:bg-gray-300 transition"
@@ -167,12 +168,17 @@
             class="block w-full py-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-gray-500 focus:border-gray-500"
             placeholder="Search jokes..."
             v-model="searchJoke"
+            :class="{ 'opacity-50 pointer-events-none': spinner }"
           />
         </form>
       </div>
-      <div v-if="spinner" class="flex flex-col items-center">
-        <div class="animate-spin h-8 w-8 border-4 border-t-transparent rounded-full"></div>
-        <span>Fetching jokes... Your daily dose of laughter is on its way!</span>
+      <div v-if="spinner" class="flex items-center justify-center bg-opacity-70 py-50">
+        <div class="flex flex-col items-center text-center text-gray-700">
+          <div class="animate-spin h-8 w-8 border-4 border-t-transparent rounded-full"></div>
+          <span class="mt-4 text-lg"
+            >Fetching jokes... Your daily dose of laughter is on its way!</span
+          >
+        </div>
       </div>
       <div
         v-else-if="activeView === 'favorites' && displayedJokes.length === 0"
