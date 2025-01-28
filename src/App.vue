@@ -180,18 +180,9 @@
           >
         </div>
       </div>
-      <div
-        v-else-if="activeView === 'favorites' && displayedJokes.length === 0"
-        class="flex flex-col items-center justify-center h-full"
-      >
-        <span
-          >Looks like your Favorites list could use a boost. Go back to All Jokes to add some jokes
-          to your Favorites list.</span
-        >
-      </div>
       <div v-else>
         <div>
-          <div class="flex items-center justify-between w-full">
+          <div class="flex items-center justify-between w-full py-4">
             <div class="flex items-center">
               <h2 class="text-2xl font-bold tracking-tight text-gray-900 py-4 px-4">
                 {{ HeaderJokeCards }}
@@ -248,6 +239,15 @@
                 </div>
               </div>
             </div>
+          </div>
+          <div
+            v-if="activeView === 'favorites' && displayedJokes.length === 0"
+            class="flex flex-col items-center justify-center h-full py-50"
+          >
+            <span
+              >Looks like your Favorites list could use a boost. Go back to All Jokes to add some
+              jokes to your Favorites list.</span
+            >
           </div>
           <div class="grid grid-cols-3 gap-8 justify-center pb-8">
             <JokeInfo
