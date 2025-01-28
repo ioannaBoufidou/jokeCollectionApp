@@ -15,13 +15,13 @@
           <li>
             <button
               type="button"
-              class="flex items-center justify-between w-full px-2 py-4 text-lg text-magenta-700 font-semibold rounded-lg transition duration-75 hover:bg-magenta-100 hover:text-magenta-900 group"
+              class="flex items-center justify-between w-full px-2 py-4 text-lg text-fuchsia-900 font-semibold rounded-lg transition group"
               @click="toggleDropdown"
               :aria-expanded="dropdownOpen"
             >
-              <span class="flex items-center gap-2"> All Jokes </span>
+              <span class="flex items-center gap-2 text-fuchsia-900"> All Jokes </span>
               <svg
-                class="w-4 h-4 text-magenta-600"
+                class="w-4 h-4 text-fuchsia-900"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 10 6"
@@ -43,7 +43,7 @@
             >
               <li>
                 <a
-                  class="block px-3 py-2 text-magenta-700 text-base rounded-lg hover:bg-magenta-100 hover:text-magenta-900"
+                  class="block px-3 py-2 text-gray-700 text-base rounded-lg hover:bg-gray-100 hover:text-gray-900"
                   @click="changeCategory('random')"
                 >
                   Random Jokes
@@ -51,7 +51,7 @@
               </li>
               <li>
                 <a
-                  class="block px-3 py-2 text-magenta-700 text-base rounded-lg hover:bg-magenta-100 hover:text-magenta-900"
+                  class="block px-3 py-2 text-gray-700 text-base rounded-lg hover:bg-gray-100 hover:text-gray-900"
                   @click="changeCategory('programming')"
                 >
                   Programming Jokes
@@ -61,11 +61,11 @@
           </li>
           <li>
             <a
-              class="flex items-center justify-between px-4 py-4 text-lg text-magenta-700 font-semibold rounded-lg transition duration-75 hover:bg-magenta-100 hover:text-magenta-900"
+              class="flex items-center justify-between px-4 py-4 text-lg text-fuchsia-900 font-semibold rounded-lg transition duration-75 hover:bg-fuchsia-900 hover:text-fuchsia-900"
               @click="changeView('favorites')"
             >
               <span class="flex items-center gap-2 px-1"> Favorites</span>
-              <span class="w-6 h-6 text-magenta-600">
+              <span class="w-6 h-6 text-fuchsia-900">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -88,13 +88,13 @@
               @click="isModalOpen = true"
             >
               <span class="flex items-center gap-2 px-1">App Info/Statistics</span>
-              <span class="w-6 h-6 text-gray-600">
+              <span class="w-6 h-6 text-fuchsia-900">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
-                  class="w-6 h-6 text-gray-500"
+                  class="w-6 h-6 text-fuchsia-900"
                 >
                   <path
                     stroke-linecap="round"
@@ -254,10 +254,9 @@
             />
           </div>
         </div>
-        <!-- TODO: Create maybe a magenta color for show more button, also for the arrow -->
         <div v-if="activeView !== 'favorites'" class="flex justify-center mt-6">
           <button
-            class="text-gray-600 hover:text-gray-800 underline text-lg"
+            class="text-fuchsia-900 hover:text-gray-600 underline text-lg"
             @click="showMoreJokes"
           >
             Show more
@@ -266,7 +265,7 @@
       </div>
     </main>
     <button
-      class="fixed bottom-4 right-4 p-3 rounded-full bg-gray-600 text-white hover:bg-gray-700"
+      class="fixed bottom-4 right-4 p-3 rounded-full bg-fuchsia-900 text-white hover:bg-gray-600"
       @click="scrollToTop"
     >
       ^
@@ -285,12 +284,12 @@
       <div class="grid grid-cols-2 gap-4 text-center py-4">
         <div class="bg-gray-50 rounded-lg p-4 shadow-sm">
           <p class="text-sm text-gray-500">Total Favorite Jokes</p>
-          <p class="text-2xl font-semibold text-magenta-700">{{ collectionStatistics().total }}</p>
+          <p class="text-2xl font-semibold text-fuchsia-900">{{ collectionStatistics().total }}</p>
         </div>
         <div class="bg-green-50 rounded-lg p-4 shadow-sm">
           <p class="text-sm text-gray-500">Average Rating</p>
           <div class="inline-flex items-center">
-            <p class="text-2xl font-semibold text-magenta-700">
+            <p class="text-2xl font-semibold text-fuchsia-900">
               {{ collectionStatistics().average }}
             </p>
             <svg
