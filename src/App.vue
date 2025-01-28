@@ -249,6 +249,20 @@
               jokes to your Favorites list.</span
             >
           </div>
+          <div
+            v-if="displayedJokes.length === 0 && (selectedFilter > 0 || searchJoke !== '')"
+            class="flex flex-col items-center justify-center h-full py-50"
+          >
+            <span>Oooops!😪</span>
+            <span v-if="selectedFilter > 0"
+              >There are no jokes with {{ selectedFilter }} star rating. You can try search
+              something else</span
+            >
+            <span v-else="searchJoke !== ''"
+              >There are no jokes with word '{{ searchJoke }}'. You can try search something
+              else</span
+            >
+          </div>
           <div class="grid grid-cols-3 gap-8 justify-center pb-8">
             <JokeInfo
               v-for="joke in displayedJokes"
@@ -478,6 +492,7 @@ export default {
       }
       // filter picklist
       if (this.selectedFilter > 0) {
+        //if selected filter nd jokes null
         jokes = jokes.filter((j) => j.rating == this.selectedFilter)
       }
       return jokes
