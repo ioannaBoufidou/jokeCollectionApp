@@ -368,7 +368,13 @@ export default {
 
         const response = await fetch(url)
         if (!response.ok) throw new Error('Failed to fetch jokes')
-        const newJokes = await response.json()
+        const data = await response.json()
+        const newJokes = data.filter(
+          (newJoke) =>
+            !Object.values(this.jokes)
+              .flat()
+              .some((existingJoke) => existingJoke.id === newJoke.id),
+        )
         if (!this.jokes[this.activeCategory]) {
           //initilize category
           this.jokes[this.activeCategory] = []
