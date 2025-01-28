@@ -376,6 +376,10 @@ export default {
       } else if (this.selectedSort === 'Alphabetically') {
         jokes.sort((a, b) => a.setup.localeCompare(b.setup))
       }
+      // filter picklist
+      if (this.selectedFilter > 0) {
+        jokes = jokes.filter((j) => j.rating == this.selectedFilter)
+      }
       return jokes
     },
     HeaderJokeCards() {
