@@ -1,6 +1,7 @@
 # jokeCollectionApp
 
-This template should help get you started developing with Vue 3 in Vite.
+A simple Vue 3 app that allows users to browse, add, and save their favorite jokes.
+![alt text](image-1.png)
 
 ## Recommended IDE Setup
 
@@ -16,8 +17,13 @@ See [Vite Configuration Reference](https://vite.dev/config/).
 
 ## Project Setup
 
+Clone the repository and install dependencies:
+
 ```sh
+git clone https://github.com/ioannaBoufidou/jokeCollectionApp.git
+cd jokeCollectionApp
 npm install
+
 ```
 
 ### Compile and Hot-Reload for Development
