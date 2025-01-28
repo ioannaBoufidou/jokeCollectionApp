@@ -21,7 +21,7 @@
             >
               <span class="flex items-center gap-2 text-fuchsia-900"> All Jokes </span>
               <svg
-                class="w-4 h-4 text-fuchsia-900"
+                class="w-4 h-4 text-gray-900"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 10 6"
@@ -65,7 +65,7 @@
               @click="changeView('favorites')"
             >
               <span class="flex items-center gap-2 px-1"> Favorites</span>
-              <span class="w-6 h-6 text-fuchsia-900">
+              <span class="w-6 h-6 text-gray-900">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -94,7 +94,7 @@
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
-                  class="w-6 h-6 text-fuchsia-900"
+                  class="w-6 h-6 text-gray-900"
                 >
                   <path
                     stroke-linecap="round"
