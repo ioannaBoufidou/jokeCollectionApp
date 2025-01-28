@@ -123,7 +123,7 @@
       </div>
     </aside>
     <main class="flex-1 bg-gray-100 p-6 overflow-y-auto">
-      <div class="flex justify-between items-center mb-6">
+      <div id="topToScroll" class="flex justify-between items-center mb-6">
         <div
           v-if="activeView !== 'favorites'"
           class="flex bg-gray-200 rounded-full overflow-hidden shadow-sm"
@@ -417,7 +417,7 @@ export default {
       await this.fetchJokes(true)
     },
     scrollToTop() {
-      window.scrollTo(0, 0) // TODO: Fix the navigation to the top of the page
+      document.getElementById('topToScroll').scrollIntoView()
     },
     changeCategory(category) {
       this.changeView('all')
@@ -492,7 +492,6 @@ export default {
       }
       // filter picklist
       if (this.selectedFilter > 0) {
-        //if selected filter nd jokes null
         jokes = jokes.filter((j) => j.rating == this.selectedFilter)
       }
       return jokes
