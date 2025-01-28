@@ -279,7 +279,7 @@
           </div>
         </div>
         <div
-          v-if="activeView !== 'favorites' && searchJoke === '' && selectedFilter === 0"
+          v-if="activeView !== 'favorites' && searchJoke === '' && Number(selectedFilter) === 0"
           class="flex justify-center mt-6"
         >
           <button
