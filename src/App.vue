@@ -271,7 +271,7 @@
               :setup="joke.setup"
               :punchline="joke.punchline"
               :id="joke.id"
-              :isFavorite="favoriteJokes.includes(joke.id)"
+              :isFavorite="joke.isFavorite"
               @toggle-favorite="toggleFavorite"
               :settedRating="joke.rating || 0"
               @rate-joke="updateJokeRating"

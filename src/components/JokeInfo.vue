@@ -132,11 +132,14 @@ export default {
       type: Number,
       default: 0,
     },
+    isFavorite: {
+      type: Boolean,
+      required: true,
+    },
   },
   data() {
     return {
       isRevealed: false,
-      isFavorite: false,
       currentRating: this.settedRating,
     }
   },
@@ -145,7 +148,6 @@ export default {
       this.isRevealed = !this.isRevealed
     },
     toggleFavorite() {
-      this.isFavorite = !this.isFavorite
       this.$emit('toggle-favorite', this.id)
     },
     rateJoke(rating) {
