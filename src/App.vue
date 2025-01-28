@@ -345,7 +345,7 @@ export default {
       // Sort picklist
       if (this.selectedSort === 'Rating') {
         jokes.sort((a, b) => b.rating - a.rating)
-      } else if (this.selectedSort === 'Alphabetical') {
+      } else if (this.selectedSort === 'Alphabetically') {
         jokes.sort((a, b) => a.setup.localeCompare(b.setup))
       }
       return jokes
