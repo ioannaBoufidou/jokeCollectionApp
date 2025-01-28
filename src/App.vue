@@ -313,7 +313,7 @@
           <p class="text-sm text-gray-500">Total Favorite Jokes</p>
           <p class="text-2xl font-semibold text-fuchsia-900">{{ collectionStatistics().total }}</p>
         </div>
-        <div class="bg-green-50 rounded-lg p-4 shadow-sm">
+        <div class="bg-gray-50 rounded-lg p-4 shadow-sm">
           <p class="text-sm text-gray-500">Average Rating</p>
           <div class="inline-flex items-center">
             <p class="text-2xl font-semibold text-fuchsia-900">
