@@ -10,11 +10,31 @@
         class="bg-white rounded-2xl shadow-lg hover:shadow-2xl p-6 flex flex-col justify-between h-64"
       >
         <button
-          v-if="!isRevealed"
-          class="absolute top-2 right-2 rounded-full w-8 h-8 items-center justify-center text-gray-800 hover:bg-gray-300 z-10 border border-gray-400"
+          class="absolute top-4 right-4 rounded-full w-9 h-9 flex items-center justify-center bg-gray-100 hover:bg-red-100"
           @click.stop="toggleFavorite"
         >
-          {{ isFavorite ? 'x' : '+' }}
+          <svg
+            v-if="!isFavorite"
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-5 h-5 text-gray-500"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+            />
+          </svg>
+          <svg
+            v-else
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-5 h-5 text-red-500"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+            />
+          </svg>
         </button>
         <h2 class="text-lg font-bold text-gray-800">{{ setup }}</h2>
         <p class="mt-4 text-gray-500 italic">Click to reveal the punchline</p>
@@ -24,11 +44,31 @@
         class="bg-gray-100 rounded-2xl shadow-lg hover:shadow-2xl p-6 flex flex-col justify-center absolute inset-0 card-back"
       >
         <button
-          v-if="isRevealed"
-          class="absolute top-2 right-2 rounded-full w-8 h-8 items-center justify-center text-gray-800 hover:bg-gray-300 z-10 border border-gray-400"
+          class="absolute top-4 right-4 rounded-full w-9 h-9 flex items-center justify-center bg-gray-100 hover:bg-red-100"
           @click.stop="toggleFavorite"
         >
-          {{ isFavorite ? 'x' : '+' }}
+          <svg
+            v-if="!isFavorite"
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-5 h-5 text-gray-500"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+            />
+          </svg>
+          <svg
+            v-else
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-5 h-5 text-red-500"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+            />
+          </svg>
         </button>
         <p class="text-gray-800 text-center mb-4">{{ punchline }}</p>
         <div class="flex justify-center items-center">
