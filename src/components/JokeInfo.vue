@@ -36,7 +36,9 @@
             />
           </svg>
         </button>
-        <h2 class="text-lg font-bold text-gray-800">{{ setup }}</h2>
+        <div style="margin-top: 25px">
+          <h2 class="text-lg font-bold text-gray-800">{{ setup }}</h2>
+        </div>
         <p class="mt-4 text-gray-500 italic">Click to reveal the punchline</p>
       </div>
       <!-- back side of the card -->
