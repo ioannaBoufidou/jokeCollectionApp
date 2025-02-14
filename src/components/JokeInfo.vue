@@ -14,8 +14,7 @@
           @click.stop="toggleFavorite"
         >
           <svg
-            v-if="!isFavorite"
-            heart
+            v-if="!props.isFavorite"
             xmlns="http://www.w3.org/2000/svg"
             class="w-5 h-5 text-gray-500"
             fill="none"
@@ -42,7 +41,7 @@
           </svg>
         </button>
         <div style="margin-top: 25px">
-          <h2 class="text-lg font-bold text-gray-800">{{ setup }}</h2>
+          <h2 class="text-lg font-bold text-gray-800">{{ props.setup }}</h2>
         </div>
         <p class="mt-4 text-gray-500 italic">Click to reveal the punchline</p>
       </div>
@@ -55,8 +54,7 @@
           @click.stop="toggleFavorite"
         >
           <svg
-            v-if="!isFavorite"
-            heart
+            v-if="!props.isFavorite"
             xmlns="http://www.w3.org/2000/svg"
             class="w-5 h-5 text-gray-500"
             fill="none"
@@ -82,7 +80,7 @@
             />
           </svg>
         </button>
-        <p class="text-gray-800 text-center mb-4">{{ punchline }}</p>
+        <p class="text-gray-800 text-center mb-4">{{ props.punchline }}</p>
         <div class="flex justify-center items-center">
           <svg
             v-for="star in 5"
@@ -108,53 +106,33 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'JokeInfo',
-  props: {
-    type: {
-      type: String,
-      required: true,
-    },
-    setup: {
-      type: String,
-      required: true,
-    },
-    punchline: {
-      type: String,
-      required: true,
-    },
-    id: {
-      type: Number,
-      required: true,
-    },
-    settedRating: {
-      type: Number,
-      default: 0,
-    },
-    isFavorite: {
-      type: Boolean,
-      required: true,
-    },
-  },
-  data() {
-    return {
-      isRevealed: false,
-      currentRating: this.settedRating,
-    }
-  },
-  methods: {
-    onRevealClick() {
-      this.isRevealed = !this.isRevealed
-    },
-    toggleFavorite() {
-      this.$emit('toggle-favorite', this.id)
-    },
-    rateJoke(rating) {
-      this.currentRating = rating
-      this.$emit('rate-joke', { id: this.id, rating })
-    },
-  },
+<script setup>
+import { ref, defineProps, defineEmits } from 'vue'
+
+const props = defineProps({
+  type: { type: String, required: true },
+  setup: { type: String, required: true },
+  punchline: { type: String, required: true },
+  id: { type: Number, required: true },
+  settedRating: { type: Number, default: 0 },
+  isFavorite: { type: Boolean, required: true },
+})
+
+const emit = defineEmits(['toggle-favorite', 'rate-joke'])
+const isRevealed = ref(false)
+const currentRating = ref(props.settedRating)
+
+const onRevealClick = () => {
+  isRevealed.value = !isRevealed.value
+}
+
+const toggleFavorite = () => {
+  emit('toggle-favorite', props.id)
+}
+
+const rateJoke = (rating) => {
+  currentRating.value = rating
+  emit('rate-joke', { id: props.id, rating })
 }
 </script>
 
